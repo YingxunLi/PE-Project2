@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polygon Shape Control</title>
+
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="controls">
+    <div id="sliderContainer">
+      <label for="sliderSides">Polygon Sides: </label>
+      <input type="range" id="sliderSides" min="1" max="10" value="5">
+      <span id="sliderSidesValue">5</span>
+    </div>
+    <div id="sliderContainer">
+      <label for="sliderCount">Polygon Count: </label>
+      <input type="range" id="sliderCount" min="1" max="30" value="5">
+      <span id="sliderCountValue">5</span>
+    </div>
+    <div id="sliderContainer">
+      <label for="sliderDistance">Center Distance: </label>
+      <input type="range" id="sliderDistance" min="100" max="500" value="160">
+      <span id="sliderDistanceValue">160</span>
+    </div>
+    <div id="sliderContainer">
+        <label for="sliderLength">Center Distance: </label>
+        <input id="sliderLength" type="range" min="10" max="100" value="40">
+        <span id="sliderLengthValue">40</span>
+      </div>
+    
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <script src="sketch.js"></script>
+</body>
+</html>
