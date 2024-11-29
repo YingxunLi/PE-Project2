@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shooting-Star-Project2</title>
+</head>
+<body>
+    <h1>Team Members</h1>
+    <ul>
+        <li><a href="Basis/index.html" target="_blank">Basis</a></li>
+        <li><a href="Kaleidoskop/index.html" target="_blank">Kaleidoskop</a></li>
+    </ul>
+</body>
+</html>
