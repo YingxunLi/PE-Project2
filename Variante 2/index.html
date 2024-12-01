@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Pyramid Kaleidoscope</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+</head>
+<body>
+  <script>
+    let angleX = 0;
+    let angleY = 0;
+    let segments = 6;  
+    let pyramidSize = 100;
+
+    function setup() {
+      createCanvas(400, 400, WEBGL);
+      noFill();
+      strokeWeight(2);
+    }
+
+    function draw() {
+      background(0);
+
+      rotateX(angleX);
+      rotateY(angleY);
+
+      let scaleFactor = map(mouseX, 0, width, 0.5, 2);
+      scale(scaleFactor);
+
+      angleX += 0.01;
+      angleY += 0.01;
+
+      for (let i = 0; i < segments; i++) {
+        push();
+        rotateY(TWO_PI / segments * i); // 按照对称性旋转
+        drawPyramid(pyramidSize);
+        pop();
+      }
+    }
+
+    function drawPyramid(size) {
+      push();
+      rotateX(HALF_PI); // 让金字塔立起来
+      stroke(255);
+      
+      beginShape();
+      for (let i = 0; i < 5; i++) {
+        let angle = map(i, 0, 5, 0, TWO_PI);
+        let x = cos(angle) * size;
+        let y = sin(angle) * size;
+        vertex(x, y, 0);
+      }
+      endShape(CLOSE);
+
+      beginShape();
+      let apex = createVector(0, 0, -size);
+      for (let i = 0; i < 5; i++) {
+        let angle = map(i, 0, 5, 0, TWO_PI);
+        let x = cos(angle) * size;
+        let y = sin(angle) * size;
+        let base = createVector(x, y, 0);
+        line(apex.x, apex.y, apex.z, base.x, base.y, base.z);
+      }
+      endShape(CLOSE);
+      pop();
+    }
+  </script>
+</body>
+</html>
