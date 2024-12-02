@@ -37,13 +37,13 @@ function draw() {
     translate(0, -yOffset, 0);
 
     for (let i = 0; i < segments; i++) {
-      let offsetAngle = (TWO_PI / segments) * i + (j * 0.1); // 额外偏移，产生螺旋效果
+      let offsetAngle = (TWO_PI / segments) * i + (j * 0.1); 
       let xOffset = cos(offsetAngle) * spiralOffset * j;
       let zOffset = sin(offsetAngle) * spiralOffset * j;
 
       push();
       translate(xOffset, 0, zOffset);
-      rotateY(offsetAngle + (PI / segments) * j); // 旋转，产生螺旋效果
+      rotateY(offsetAngle + (PI / segments) * j); 
       drawPyramid(pyramidSize, j);
       pop();
     }
@@ -52,22 +52,19 @@ function draw() {
   }
 }
 
-// 绘制一个3D星形金字塔
 function drawPyramid(size, layerIndex) {
   push();
   rotateX(HALF_PI);
 
-  // 根据层的位置设置颜色，产生渐变效果
-  let baseColor = color(255 * (layerIndex / layers), 100, 150, 150); // 渐变颜色
-  let sideColor = color(100, 150, 255 * (1 - layerIndex / layers), 150); // 渐变颜色
-  stroke(255, 50); // 略微可见的轮廓线
+  let baseColor = color(255 * (layerIndex / layers), 100, 150, 150); 
+  let sideColor = color(100, 150, 255 * (1 - layerIndex / layers), 150); 
+  stroke(255, 50); 
 
-  // 绘制星形底座
   fill(baseColor);
   beginShape();
   for (let i = 0; i < 10; i++) {
     let angle = map(i, 0, 10, 0, TWO_PI);
-    let radius = i % 2 === 0 ? size : size / 2; // 在外圆和内圆之间交替
+    let radius = i % 2 === 0 ? size : size / 2; 
     let x = cos(angle) * radius;
     let y = sin(angle) * radius;
     vertex(x, y, 0);
