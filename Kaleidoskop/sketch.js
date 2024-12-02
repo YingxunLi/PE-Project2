@@ -1,41 +1,35 @@
 let angleX = 0;
 let angleY = 0;
-let segments = 6;  // Number of symmetrical segments
-let layers = 20;   // Number of layers in the spiral
+let segments = 6;  
+let layers = 20;   
 let pyramidSize = 30;
-let layerHeight = 50; // Height between each layer
-let spiralOffset = 50; // Distance between each pyramid in the spiral
-let baseScale = 1; // 用于设置基础的缩放比例
+let layerHeight = 50; 
+let spiralOffset = 50; 
+let baseScale = 1; 
 
 function setup() {
   createCanvas(600, 600, WEBGL);
   strokeWeight(2);
-  resetParameters();  // 初始化参数
+  resetParameters();  
 }
 
 function draw() {
   background(0);
 
-  // 动态根据鼠标X位置控制图形缩放
-  let scaleFactor = map(mouseX, 0, width, 0.5, 2); // 基于鼠标X位置调整缩放比例
+  let scaleFactor = map(mouseX, 0, width, 0.5, 2); 
   baseScale = scaleFactor;
 
-  // 动态控制金字塔的层间高度和层数，根据鼠标Y位置调整
-  layerHeight = map(mouseY, 0, height, 10, 100); // 垂直方向的间距根据鼠标Y位置调整
-  layers = int(map(mouseY, 0, height, 10, 30)); // 根据鼠标Y位置调整金字塔层数
+  layerHeight = map(mouseY, 0, height, 10, 100); 
+  layers = int(map(mouseY, 0, height, 10, 30)); 
 
-  // 设置摄像机位置并允许旋转
   rotateX(angleX);
   rotateY(angleY);
 
-  // 使用缩放因子调整整个图形的大小
   scale(baseScale);
 
-  // 添加旋转效果
   angleX += 0.01;
   angleY += 0.01;
 
-  // 绘制多个金字塔层，在螺旋中有偏移
   for (let j = 0; j < layers; j++) {
     let yOffset = j * layerHeight;
 
@@ -80,7 +74,6 @@ function drawPyramid(size, layerIndex) {
   }
   endShape(CLOSE);
 
-  // 绘制从底座到顶点的线
   fill(sideColor);
   let apex = createVector(0, 0, -size);
   for (let i = 0; i < 10; i++) {
@@ -98,17 +91,14 @@ function drawPyramid(size, layerIndex) {
   pop();
 }
 
-// 监听空格键按下事件，重置参数
 function keyPressed() {
   if (key === ' ') {
     resetParameters();
   }
 }
 
-// 重置参数，加入随机性
 function resetParameters() {
-  // 随机化层数、金字塔大小、螺旋偏移量
-  layers = int(random(15, 30)); // 随机层数
-  pyramidSize = random(20, 50); // 随机金字塔大小
-  spiralOffset = random(40, 80); // 随机螺旋偏移
+  layers = int(random(15, 30)); 
+  pyramidSize = random(20, 50); 
+  spiralOffset = random(40, 80); 
 }
