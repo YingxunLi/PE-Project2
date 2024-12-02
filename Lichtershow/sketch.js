@@ -89,3 +89,4 @@ function draw() {
     drawPyramid(pyramid.baseCenter, pyramid.apex);
   }
 }
+
