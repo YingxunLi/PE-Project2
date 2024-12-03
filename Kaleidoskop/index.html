@@ -5,82 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kaleidoskop</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <style>
+    /* 滑块整体容器样式 */
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: white;
+      color: black;
+      font-family: Arial, sans-serif;
+    }
+
+    /* 将滑块容器放到页面最左侧，并且每个滑块占一行 */
+    .sliderWrapper {
+      position: fixed; /* 固定位置 */
+      top: 50%; /* 垂直居中 */
+      left: 10px; /* 距离左侧10px */
+      transform: translateY(-50%); /* 垂直居中 */
+      display: flex;
+      flex-direction: column; /* 垂直排列 */
+      gap: 20px; /* 间距 */
+    }
+
+    .sliderWrapper label {
+      margin-bottom: 5px; /* 给标签一些空间 */
+    }
+
+    /* 滑块的宽度 */
+    input[type="range"] {
+      width: 200px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Kaleidoskop</h1>
-  <p>Use the sliders below to control the pyramid size, pyramid quantity, and polygon sides. Layer height is controlled by vertical mouse movement.</p>
-
-  <!-- Sliders for pyramid size, quantity, and polygon sides -->
-  <div>
-    <label for="sizeSlider">Pyramid Size: </label>
-    <input id="sizeSlider" type="range" min="10" max="100" value="30">
-  </div>
-  <div>
-    <label for="quantitySlider">Pyramid Quantity: </label>
-    <input id="quantitySlider" type="range" min="10" max="50" value="20">
-  </div>
-  <div>
-    <label for="polygonSlider">Polygon Sides: </label>
-    <input id="polygonSlider" type="range" min="1" max="10" value="6">
+  <div class="sliderWrapper">
+    <div>
+      <label for="sizeSlider">Size: </label>
+      <input id="sizeSlider" type="range" min="10" max="100" value="30">
+    </div>
+    <div>
+      <label for="quantitySlider">Quantity: </label>
+      <input id="quantitySlider" type="range" min="10" max="50" value="20">
+    </div>
+    <div>
+      <label for="polygonSlider">Sides: </label>
+      <input id="polygonSlider" type="range" min="1" max="10" value="6">
+    </div>
   </div>
 
   <script>
     let angleX = 0;
     let angleY = 0;
-    let segments = 6;  // Number of pyramids per layer (adjusted by pyramid quantity slider)
-    let layers = 20;   // Number of layers in the spiral (controlled by mouseY)
-    let pyramidSize = 30; // Pyramid size (controlled by slider)
-    let layerHeight = 50; // Height between each layer (controlled by mouseY)
-    let spiralOffset = 50; // Distance between each pyramid in the spiral
-    let baseScale = 1; // Base scale for zoom effect
-    let polygonSides = 6; // Number of sides for the polygon base (controlled by polygon sides slider)
+    let segments = 6;
+    let layers = 20;
+    let pyramidSize = 30;
+    let layerHeight = 50;
+    let spiralOffset = 50;
+    let baseScale = 1;
+    let polygonSides = 6;
 
     function setup() {
       createCanvas(640, 640, WEBGL);
       strokeWeight(2);
 
-      // Initialize sliders for user input
       let sizeSlider = select('#sizeSlider');
       let quantitySlider = select('#quantitySlider');
       let polygonSlider = select('#polygonSlider');
 
-      // Listen to slider changes to update pyramid size, quantity, and polygon sides
-      sizeSlider.input(() => {
-        pyramidSize = sizeSlider.value(); // Update pyramid size from slider
-      });
-      quantitySlider.input(() => {
-        segments = int(quantitySlider.value()); // Update number of pyramids per layer from slider
-      });
-      polygonSlider.input(() => {
-        polygonSides = int(polygonSlider.value()); // Update number of polygon sides for pyramid base
-      });
+      sizeSlider.input(() => { pyramidSize = sizeSlider.value(); });
+      quantitySlider.input(() => { segments = int(quantitySlider.value()); });
+      polygonSlider.input(() => { polygonSides = int(polygonSlider.value()); });
     }
 
     function draw() {
       background(0);
 
-      // Dynamically adjust the scale based on mouse X position
       let scaleFactor = map(mouseX, 0, width, 0.5, 2); // Scale based on mouse X
       baseScale = scaleFactor;
 
-      // Use mouseY to control the number of layers dynamically
       layers = int(map(mouseY, 0, height, 10, 30)); // Map mouse Y position to number of layers
-
-      // Dynamically adjust the layer height based on vertical mouse position (mouseY)
       layerHeight = map(mouseY, 0, height, 10, 100); // Layer height adjusts with vertical mouse movement
 
-      // Set camera rotation
       rotateX(angleX);
       rotateY(angleY);
 
-      // Apply scale to the entire scene
       scale(baseScale);
 
-      // Increment rotation for animation effect
       angleX += 0.01;
       angleY += 0.01;
 
-      // Draw pyramids in a spiral pattern based on slider and mouse values
       for (let j = 0; j < layers; j++) {
         let yOffset = j * layerHeight;
 
@@ -88,14 +103,14 @@
         translate(0, -yOffset, 0);
 
         for (let i = 0; i < segments; i++) {
-          let offsetAngle = (TWO_PI / segments) * i + (j * 0.1); // Create spiral offset
+          let offsetAngle = (TWO_PI / segments) * i + (j * 0.1);
           let xOffset = cos(offsetAngle) * spiralOffset * j;
           let zOffset = sin(offsetAngle) * spiralOffset * j;
 
           push();
           translate(xOffset, 0, zOffset);
-          rotateY(offsetAngle + (PI / segments) * j); // Apply rotation for spiral effect
-          drawPyramid(pyramidSize, j, polygonSides); // Draw each pyramid with dynamic base sides
+          rotateY(offsetAngle + (PI / segments) * j);
+          drawPyramid(pyramidSize, j, polygonSides);
           pop();
         }
 
@@ -103,29 +118,25 @@
       }
     }
 
-    // Function to draw the 3D pyramid with a polygon base
     function drawPyramid(size, layerIndex, sides) {
       push();
       rotateX(HALF_PI);
 
-      // Set color based on layer index
-      let baseColor = color(255 * (layerIndex / layers), 100, 150, 150); // Gradual color change
+      let baseColor = color(255 * (layerIndex / layers), 100, 150, 150);
       let sideColor = color(100, 150, 255 * (1 - layerIndex / layers), 150);
-      stroke(255, 50); // Outline color
+      stroke(255, 50);
 
-      // Draw the polygon base
       fill(baseColor);
       beginShape();
       for (let i = 0; i < sides; i++) {
         let angle = map(i, 0, sides, 0, TWO_PI);
-        let radius = i % 2 === 0 ? size : size / 2; // Alternate between two radii
+        let radius = i % 2 === 0 ? size : size / 2;
         let x = cos(angle) * radius;
         let y = sin(angle) * radius;
         vertex(x, y, 0);
       }
       endShape(CLOSE);
 
-      // Draw the sides of the pyramid from the base to the apex
       fill(sideColor);
       let apex = createVector(0, 0, -size);
       for (let i = 0; i < sides; i++) {
@@ -141,21 +152,6 @@
       }
 
       pop();
-    }
-
-    // Function to reset parameters when spacebar is pressed
-    function keyPressed() {
-      if (key === ' ') {
-        resetParameters();
-      }
-    }
-
-    // Reset function to randomize parameters (initial random settings)
-    function resetParameters() {
-      layers = int(random(15, 30));
-      pyramidSize = random(20, 50);
-      spiralOffset = random(40, 80);
-      polygonSides = int(random(3, 10)); // Random polygon sides between 3 and 10
     }
   </script>
 </body>
