@@ -8,7 +8,7 @@ let spiralOffset = 50;
 let baseScale = 1; 
 
 function setup() {
-  createCanvas(600, 600, WEBGL);
+  createCanvas(640, 640, WEBGL);
   strokeWeight(2);
   resetParameters();  
 }
